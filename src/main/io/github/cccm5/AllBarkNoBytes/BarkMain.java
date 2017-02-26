@@ -49,7 +49,8 @@ public class BarkMain extends JavaPlugin implements Listener{
             state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
             state.update();
             //e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
-            e.getPlayer().sendTitle("",TAG + "Block succesfully changed!");
+            //e.getPlayer().sendTitle("",TAG + "Block succesfully changed!");
+            actionbar.sendActionbar(e.getPlayer(),TAG + "Block succesfully changed!");
         }
     }
     @Override
@@ -93,7 +94,7 @@ public class BarkMain extends JavaPlugin implements Listener{
 
         } else if (version.equals("v1_10_R1")) {
             //server is running 1.8.3 so we need to use the 1.8 R2 NMS class
-            actionbar = new Actionbar_1_10_R1();
+            //actionbar = new Actionbar_1_10_R1();
         }
         // This will return true if the server version was compatible with one of our NMS classes
         // because if it is, our actionbar would not be null

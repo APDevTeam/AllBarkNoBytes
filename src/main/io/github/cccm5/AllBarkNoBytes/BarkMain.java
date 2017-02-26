@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Tree;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,7 +38,9 @@ public class BarkMain extends JavaPlugin implements Listener{
         logger = this.getLogger();
         getServer().getPluginManager().registerEvents(this, this);
         wandItem= new ItemStack(Material.GOLD_HOE);
-        wandItem.getItemMeta().setDisplayName("Bark wand");
+        ItemMeta meta = wandItem.getItemMeta();
+        meta.setDisplayName(ChatColor.RED + "Bark wand");
+        wandItem.setItemMeta(meta);
     }
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {

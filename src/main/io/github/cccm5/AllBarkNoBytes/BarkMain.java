@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.Step;
 import org.bukkit.material.TexturedMaterial;
 import org.bukkit.material.Tree;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,9 +45,9 @@ public class BarkMain extends JavaPlugin implements Listener{
             meta.setDisplayName(ITEMTAG + ChatColor.RED + "Bark wand");
             wandItem.setItemMeta(meta);
         }
-        registerRecipe(slabGenerator(Material.STEP,"Smooth Stone Slab",Material.STONE));
-        registerRecipe(slabGenerator(Material.STEP,"Smooth Sandstone Slab",Material.SANDSTONE));
-        registerRecipe(slabGenerator(Material.STEP,"Smooth Quartz Slab",Material.QUARTZ_BLOCK));
+        registerRecipe(slabGenerator(Material.STONE,"Smooth Stone Slab"));
+        registerRecipe(slabGenerator(Material.SANDSTONE,"Smooth Sandstone Slab"));
+        registerRecipe(slabGenerator(Material.QUARTZ_BLOCK,"Smooth Quartz Slab"));
 
         for(TreeSpecies species : TreeSpecies.values()) {
             ItemStack item = new ItemStack(new Tree(species).getItemType());
@@ -133,15 +134,13 @@ public class BarkMain extends JavaPlugin implements Listener{
         Bukkit.addRecipe(customRecipe);
     }
 
-    private ItemStack slabGenerator(Material type, String name, Material base){
-        if(type!=Material.STEP && type!=Material.STONE_SLAB2 && type!=Material.WOOD_STEP)
-            throw new IllegalArgumentException("Illegal material type: " + type);
-        ItemStack item = new ItemStack(type);
+    private ItemStack slabGenerator(Material base, String name){
+        ItemStack item = new Step(base).toItemStack();//new ItemStack(type);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
         item.setItemMeta(meta);
-        TexturedMaterial data = (TexturedMaterial) item.getData();
-        data.setMaterial(base);
+        //Step data = (Step) item.getData();
+        //data.setMaterial(base);
         return item;
     }
 

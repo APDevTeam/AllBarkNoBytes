@@ -34,12 +34,12 @@ public class BarkMain extends JavaPlugin implements Listener{
     }
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {
-        if(e.getAction()!= Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()!= Material.LOG || e.getClickedBlock().getType()!= Material.LOG_2))
-            return;
-        BlockState state = e.getClickedBlock().getState();
-        state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
-        state.update();
-        e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
+        if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2)){
+            BlockState state = e.getClickedBlock().getState();
+            state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
+            state.update();
+            e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
+        }
     }
 
 }

@@ -30,18 +30,5 @@
             <version>1.9.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.9.2-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.9.2-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/craftbukkit-1.9.2.jar</systemPath>
-        </dependency>
     </dependencies>
 </project>

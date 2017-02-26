@@ -22,7 +22,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MotdMain extends JavaPlugin implements Listener{
+public class BarkMain extends JavaPlugin implements Listener{
     private FileConfiguration config;
     private Logger logger;
     private final String TAG = ChatColor.RED +  "[" + ChatColor.DARK_RED + "AllBarkNoBytes" + ChatColor.RED + "] " + ChatColor.RESET ;

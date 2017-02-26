@@ -54,6 +54,7 @@ public class BarkMain extends JavaPlugin implements Listener{
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("Smooth " + meta.getDisplayName());
             item.setItemMeta(meta);
+            logger.info("Setting recipe for " + item.getItemMeta().getDisplayName() + " of type " + item.getData());
             registerRecipe(item);
         }
     }

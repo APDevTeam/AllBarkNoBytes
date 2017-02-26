@@ -51,7 +51,7 @@ public class BarkMain extends JavaPlugin implements Listener{
 
         for(TreeSpecies species : TreeSpecies.values()) {
             ItemStack item = new ItemStack(new Tree(species).getItemType());
-            item.setData(new Tree(species));
+            item.setData(new Tree(species).toItemStack().getData());
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("Smooth " + speciesToName(species) + " Log");
             item.setItemMeta(meta);

@@ -1,5 +1,6 @@
 package io.github.cccm5.AllBarkNoBytes;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -17,15 +18,21 @@ import org.bukkit.material.Tree;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
+import io.github.cccm5.AllBarkNoBytes.actionbar.*;
 
 public class BarkMain extends JavaPlugin implements Listener{
     private Logger logger;
     private final String TAG = ChatColor.RED +  "[" + ChatColor.DARK_RED + "AllBarkNoBytes" + ChatColor.RED + "] " + ChatColor.RESET ;
     private ItemStack wandItem;
+    private Actionbar actionbar;
 
     @Override
     public void onEnable() {
         logger = this.getLogger();
+        if(!setupActionbar()) {
+            logger.severe("Unsupourted version found, disabling plugin");
+            getServer().getPluginManager().disablePlugin(this);
+        }
         getServer().getPluginManager().registerEvents(this, this);
         wandItem= new ItemStack(Material.GOLD_HOE);
         ItemMeta meta = wandItem.getItemMeta();
@@ -65,5 +72,33 @@ public class BarkMain extends JavaPlugin implements Listener{
         player.getInventory().addItem(wandItem);
         return true;
     }
+
+    private boolean setupActionbar() {
+
+        String version;
+
+        try {
+
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+
+        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+            return false;
+        }
+
+        getLogger().info("Your server is running version " + version);
+
+        if (version.equals("v1_9_R1")) {
+            //server is running 1.8-1.8.1 so we need to use the 1.8 R1 NMS class
+            actionbar = new Actionbar_1_9_R1();
+
+        } else if (version.equals("v1_10_R1")) {
+            //server is running 1.8.3 so we need to use the 1.8 R2 NMS class
+            actionbar = new Actionbar_1_10_R1();
+        }
+        // This will return true if the server version was compatible with one of our NMS classes
+        // because if it is, our actionbar would not be null
+        return actionbar != null;
+    }
+
 
 }

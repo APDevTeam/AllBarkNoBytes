@@ -42,15 +42,19 @@ public class BarkMain extends JavaPlugin implements Listener{
     @EventHandler
     @SuppressWarnings("deprecation")
     public void onPlayerRightClick(PlayerInteractEvent e) {
-        if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2) &&e.hasItem() && e.getItem().isSimilar(wandItem)){
-            BlockState state = e.getClickedBlock().getState();
-            if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
-                return;
-            state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
-            state.update();
-            //e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
-            //e.getPlayer().sendTitle("",TAG + "Block succesfully changed!");
-            actionbar.sendActionbar(e.getPlayer(),TAG + "Block succesfully changed!");
+        if(e.hasItem() && e.getItem().isSimilar(wandItem)){
+            if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2)){
+                BlockState state = e.getClickedBlock().getState();
+                if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
+                    return;
+                state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
+                state.update();
+                //e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
+                // e.getPlayer().sendTitle("",TAG + "Block succesfully changed!");
+                // actionbar.sendActionbar(e.getPlayer(),TAG + "Block succesfully changed!");
+            }
+            else
+                e.setCancelled(true);
         }
     }
     @Override

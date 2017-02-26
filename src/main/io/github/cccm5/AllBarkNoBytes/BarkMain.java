@@ -1,5 +1,7 @@
 package io.github.cccm5.AllBarkNoBytes;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -8,6 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Player.Spigot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -51,7 +54,8 @@ public class BarkMain extends JavaPlugin implements Listener{
                 state.update();
                 //e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
                 // e.getPlayer().sendTitle("",TAG + "Block succesfully changed!");
-                // actionbar.sendActionbar(e.getPlayer(),TAG + "Block succesfully changed!");
+                //actionbar.sendActionbar(e.getPlayer(),TAG + "Block succesfully changed!");
+                ((Spigot)e.getPlayer()).sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(TAG + "Block succesfully changed!"));
             }
             else
                 e.setCancelled(true);

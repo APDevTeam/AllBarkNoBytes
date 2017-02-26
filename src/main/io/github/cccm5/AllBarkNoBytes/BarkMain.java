@@ -131,8 +131,8 @@ public class BarkMain extends JavaPlugin implements Listener{
     }
 
     private ItemStack slabGenerator(Material type, String name, Material base){
-        if(type!=Material.STEP || type!=Material.STONE_SLAB2 || type!=Material.WOOD_STEP)
-            throw new IllegalArgumentException("Material type must be step, stone_slab_2 or wood_step");
+        if(type!=Material.STEP && type!=Material.STONE_SLAB2 && type!=Material.WOOD_STEP)
+            throw new IllegalArgumentException("Illegal material type: " + type);
         ItemStack item = new ItemStack(type);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);

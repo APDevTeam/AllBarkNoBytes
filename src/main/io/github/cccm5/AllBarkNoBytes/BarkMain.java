@@ -50,8 +50,7 @@ public class BarkMain extends JavaPlugin implements Listener{
         registerRecipe(slabGenerator(Material.QUARTZ_BLOCK,"Smooth Quartz Slab"));
 
         for(TreeSpecies species : TreeSpecies.values()) {
-            ItemStack item = new ItemStack(new Tree(species).getItemType());
-            item.setData(new Tree(species).toItemStack().getData());
+            ItemStack item = new Tree(species).toItemStack(1);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("Smooth " + speciesToName(species) + " Log");
             item.setItemMeta(meta);
@@ -149,7 +148,9 @@ public class BarkMain extends JavaPlugin implements Listener{
             return "Oak";
         if(species == TreeSpecies.REDWOOD)
             return "Spruce";
-        return species.toString();
+        if(species==TreeSpecies.DARK_OAK)
+            return "Dark Oak";
+        return species.toString().replaceAll("_"," ").substring(0,1) + species.toString().replaceAll("_"," ").toLowerCase().substring(1);
     }
 
 }

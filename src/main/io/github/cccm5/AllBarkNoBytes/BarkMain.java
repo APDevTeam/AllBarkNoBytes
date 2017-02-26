@@ -123,7 +123,7 @@ public class BarkMain extends JavaPlugin implements Listener{
 
     private void registerRecipe(ItemStack item){
         ItemStack result = item.clone();
-        item.setAmount(4);
+        result.setAmount(4);
         ItemMeta meta = result.getItemMeta();
         meta.setDisplayName(ITEMTAG + meta.getDisplayName());
         result.setItemMeta(meta);

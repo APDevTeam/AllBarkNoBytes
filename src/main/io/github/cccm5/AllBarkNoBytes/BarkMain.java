@@ -36,6 +36,8 @@ public class BarkMain extends JavaPlugin implements Listener{
     public void onPlayerRightClick(PlayerInteractEvent e) {
         if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2)){
             BlockState state = e.getClickedBlock().getState();
+            if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
+                return;
             state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
             state.update();
             e.getPlayer().sendMessage(TAG + "Block succesfully changed!");

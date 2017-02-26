@@ -6,7 +6,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,18 +16,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Tree;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BarkMain extends JavaPlugin implements Listener{
-    private FileConfiguration config;
     private Logger logger;
     private final String TAG = ChatColor.RED +  "[" + ChatColor.DARK_RED + "AllBarkNoBytes" + ChatColor.RED + "] " + ChatColor.RESET ;
     private ItemStack wandItem;
@@ -43,6 +33,7 @@ public class BarkMain extends JavaPlugin implements Listener{
         wandItem.setItemMeta(meta);
     }
     @EventHandler
+    @SuppressWarnings("deprecation")
     public void onPlayerRightClick(PlayerInteractEvent e) {
         if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2) &&e.hasItem() && e.getItem().isSimilar(wandItem)){
             BlockState state = e.getClickedBlock().getState();
@@ -50,7 +41,8 @@ public class BarkMain extends JavaPlugin implements Listener{
                 return;
             state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
             state.update();
-            e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
+            //e.getPlayer().sendMessage(TAG + "Block succesfully changed!");
+            e.getPlayer().sendTitle("",TAG + "Block succesfully changed!");
         }
     }
     @Override

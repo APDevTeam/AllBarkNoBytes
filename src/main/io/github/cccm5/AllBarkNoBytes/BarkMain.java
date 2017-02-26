@@ -52,7 +52,7 @@ public class BarkMain extends JavaPlugin implements Listener{
             ItemStack item = new ItemStack(new Tree(species).getItemType());
             item.setData(new Tree(species));
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("Smooth " + meta.getDisplayName());
+            meta.setDisplayName("Smooth " + speciesToName(species) + " Log");
             item.setItemMeta(meta);
             logger.info("Setting recipe for " + item.getItemMeta().getDisplayName() + " of type " + item.getData());
             registerRecipe(item);
@@ -101,7 +101,7 @@ public class BarkMain extends JavaPlugin implements Listener{
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if(!e.getItemInHand().getItemMeta().getDisplayName().startsWith(ITEMTAG))
+        if(!(e.getItemInHand().hasItemMeta() && e.getItemInHand().getItemMeta().getDisplayName().startsWith(ITEMTAG)))
             return;
         switch(e.getBlock().getType()) {
             case LOG:
@@ -143,6 +143,14 @@ public class BarkMain extends JavaPlugin implements Listener{
         TexturedMaterial data = (TexturedMaterial) item.getData();
         data.setMaterial(base);
         return item;
+    }
+
+    private String speciesToName(TreeSpecies species){
+        if(species == TreeSpecies.GENERIC)
+            return "Oak";
+        if(species == TreeSpecies.REDWOOD)
+            return "Spruce";
+        return species.toString();
     }
 
 }

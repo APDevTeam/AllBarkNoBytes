@@ -20,10 +20,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
 import org.bukkit.material.Step;
-import org.bukkit.material.TexturedMaterial;
 import org.bukkit.material.Tree;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,10 +45,9 @@ public class BarkMain extends JavaPlugin implements Listener{
             wandItem.setItemMeta(meta);
         }
 
-        registerRecipe(slabGenerator(Material.STONE,"Smooth Stone Slab"));
-        registerRecipe(slabGenerator(Material.SANDSTONE,"Smooth Sandstone Slab"));
-        registerRecipe(slabGenerator(Material.RED_SANDSTONE,"Smooth Red Sandstone Slab"));
-        registerRecipe(slabGenerator(Material.QUARTZ_BLOCK,"Smooth Quartz Slab"));
+        //Disabled
+        //registerRecipe(slabGenerator(Material.STONE,"Smooth Stone Slab"));
+        //registerRecipe(slabGenerator(Material.SANDSTONE,"Smooth Sandstone Slab"));
 
         for(TreeSpecies species : TreeSpecies.values()) {
             ItemStack item = new Tree(species).toItemStack(4);
@@ -117,9 +114,9 @@ public class BarkMain extends JavaPlugin implements Listener{
             case STEP:
             case STONE_SLAB2: {
                 BlockState state = e.getBlock().getState();
-                state.setData(new SmoothBrick(e.getBlock().getType()));
+                //(Step)e.getBlock().getState().getData())
+                state.setData(new SmoothBrick());
                 state.update();
-                return;
             }
         }
     }

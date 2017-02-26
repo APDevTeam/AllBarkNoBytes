@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.SmoothBrick;
 import org.bukkit.material.Step;
 import org.bukkit.material.TexturedMaterial;
 import org.bukkit.material.Tree;
@@ -45,8 +46,10 @@ public class BarkMain extends JavaPlugin implements Listener{
             meta.setDisplayName(ITEMTAG + ChatColor.RED + "Bark wand");
             wandItem.setItemMeta(meta);
         }
+
         registerRecipe(slabGenerator(Material.STONE,"Smooth Stone Slab"));
         registerRecipe(slabGenerator(Material.SANDSTONE,"Smooth Sandstone Slab"));
+        registerRecipe(slabGenerator(Material.RED_SANDSTONE,"Smooth Red Sandstone Slab"));
         registerRecipe(slabGenerator(Material.QUARTZ_BLOCK,"Smooth Quartz Slab"));
 
         for(TreeSpecies species : TreeSpecies.values()) {
@@ -114,7 +117,7 @@ public class BarkMain extends JavaPlugin implements Listener{
             case STEP:
             case STONE_SLAB2: {
                 BlockState state = e.getBlock().getState();
-                //state.setData(new Tree(((Tree) state.getData()).getSpecies(), BlockFace.SELF));
+                state.setData(new SmoothBrick(e.getBlock().getType()));
                 state.update();
                 return;
             }
@@ -123,7 +126,6 @@ public class BarkMain extends JavaPlugin implements Listener{
 
     private void registerRecipe(ItemStack item){
         ItemStack result = item.clone();
-        result.setAmount(4);
         ItemMeta meta = result.getItemMeta();
         meta.setDisplayName(ITEMTAG + meta.getDisplayName());
         result.setItemMeta(meta);
@@ -134,7 +136,7 @@ public class BarkMain extends JavaPlugin implements Listener{
     }
 
     private ItemStack slabGenerator(Material base, String name){
-        ItemStack item = new Step(base).toItemStack(4);//new ItemStack(type);
+        ItemStack item = new Step(base).toItemStack(2);//new ItemStack(type);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
         item.setItemMeta(meta);

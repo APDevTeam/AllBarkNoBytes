@@ -59,7 +59,6 @@ public class BarkMain extends JavaPlugin implements Listener{
         }
     }
     @EventHandler
-    @SuppressWarnings("deprecation")
     public void onPlayerRightClick(PlayerInteractEvent e) {
         if(e.hasItem() && e.getItem().isSimilar(wandItem)){
             if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2)){
@@ -67,6 +66,10 @@ public class BarkMain extends JavaPlugin implements Listener{
                 if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
                     return;
                 if(!e.getPlayer().hasPermission("AllBarkNoBytes.wand")) {
+                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(TAG + "You don't have permision for that!"));
+                    return;
+                }
+                if(e.isCancelled()) {
                     e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(TAG + "You don't have permision for that!"));
                     return;
                 }

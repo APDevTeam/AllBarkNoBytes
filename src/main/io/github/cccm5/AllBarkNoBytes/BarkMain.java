@@ -20,8 +20,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.SmoothBrick;
-import org.bukkit.material.Step;
 import org.bukkit.material.Tree;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,10 +43,6 @@ public class BarkMain extends JavaPlugin implements Listener{
             wandItem.setItemMeta(meta);
         }
 
-        //Disabled
-        //registerRecipe(slabGenerator(Material.STONE,"Smooth Stone Slab"));
-        //registerRecipe(slabGenerator(Material.SANDSTONE,"Smooth Sandstone Slab"));
-
         for(TreeSpecies species : TreeSpecies.values()) {
             ItemStack item = new Tree(species).toItemStack(4);
             ItemMeta meta = item.getItemMeta();
@@ -61,7 +55,7 @@ public class BarkMain extends JavaPlugin implements Listener{
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {
         if(e.hasItem() && e.getItem().isSimilar(wandItem)){
-            if(e.getAction()== Action.RIGHT_CLICK_BLOCK && (e.getClickedBlock().getType()== Material.LOG || e.getClickedBlock().getType()== Material.LOG_2)){
+            if(e.getAction()== Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Tree){
                 BlockState state = e.getClickedBlock().getState();
                 if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
                     return;
@@ -106,21 +100,10 @@ public class BarkMain extends JavaPlugin implements Listener{
     public void onBlockPlace(BlockPlaceEvent e) {
         if(!(e.getItemInHand().hasItemMeta() && e.getItemInHand().getItemMeta().getDisplayName().startsWith(ITEMTAG)))
             return;
-        switch(e.getBlock().getType()) {
-            case LOG:
-            case LOG_2: {
-                BlockState state = e.getBlock().getState();
+        if(e.getBlock().getState() instanceof Tree) {
+            BlockState state = e.getBlock().getState();
                 state.setData(new Tree(((Tree) state.getData()).getSpecies(), BlockFace.SELF));
                 state.update();
-                return;
-            }
-            case STEP:
-            case STONE_SLAB2: {
-                BlockState state = e.getBlock().getState();
-                //(Step)e.getBlock().getState().getData())
-                state.setData(new SmoothBrick());
-                state.update();
-            }
         }
     }
 
@@ -135,24 +118,21 @@ public class BarkMain extends JavaPlugin implements Listener{
         Bukkit.addRecipe(customRecipe);
     }
 
-    private ItemStack slabGenerator(Material base, String name){
-        ItemStack item = new Step(base).toItemStack(2);//new ItemStack(type);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        item.setItemMeta(meta);
-        //Step data = (Step) item.getData();
-        //data.setMaterial(base);
-        return item;
-    }
-
-    private String speciesToName(TreeSpecies species){
+    private static String speciesToName(TreeSpecies species){
         if(species == TreeSpecies.GENERIC)
             return "Oak";
         if(species == TreeSpecies.REDWOOD)
             return "Spruce";
-        if(species==TreeSpecies.DARK_OAK)
-            return "Dark Oak";
-        return species.toString().replaceAll("_"," ").substring(0,1) + species.toString().replaceAll("_"," ").toLowerCase().substring(1);
+        StringBuilder build = new StringBuilder();
+        for(int i =0; i<species.toString().length();i++){
+            if(species.toString().charAt(i) == '_')
+                build.append(' ');
+            if(i==0 || species.toString().charAt(i-1) == ' ')
+                build.append(Character.toUpperCase(species.toString().charAt(i)));
+            else
+                build.append(Character.toLowerCase(species.toString().charAt(i)));
+        }
+        return build.toString();
     }
 
 }

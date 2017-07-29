@@ -55,7 +55,7 @@ public class BarkMain extends JavaPlugin implements Listener{
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEvent e) {
         if(e.hasItem() && e.getItem().isSimilar(wandItem)){
-            if(e.getAction()== Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Tree){
+            if(e.getAction()== Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState().getData() instanceof Tree){
                 BlockState state = e.getClickedBlock().getState();
                 if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
                     return;

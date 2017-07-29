@@ -100,7 +100,7 @@ public class BarkMain extends JavaPlugin implements Listener{
     public void onBlockPlace(BlockPlaceEvent e) {
         if(!(e.getItemInHand().hasItemMeta() && e.getItemInHand().getItemMeta().getDisplayName().startsWith(ITEMTAG)))
             return;
-        if(e.getBlock().getState() instanceof Tree) {
+        if(e.getBlock().getState().getData() instanceof Tree) {
             BlockState state = e.getBlock().getState();
                 state.setData(new Tree(((Tree) state.getData()).getSpecies(), BlockFace.SELF));
                 state.update();

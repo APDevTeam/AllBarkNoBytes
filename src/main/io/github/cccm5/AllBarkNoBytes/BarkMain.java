@@ -39,7 +39,7 @@ public class BarkMain extends JavaPlugin implements Listener{
         {
             wandItem = new ItemStack(Material.GOLD_HOE);
             ItemMeta meta = wandItem.getItemMeta();
-            meta.setDisplayName(ITEMTAG + ChatColor.RED + "Bark wand");
+            meta.setDisplayName(ITEMTAG + "Bark wand");
             wandItem.setItemMeta(meta);
         }
 
@@ -60,16 +60,16 @@ public class BarkMain extends JavaPlugin implements Listener{
                 if(((Tree)state.getData()).getDirection() == BlockFace.SELF)
                     return;
                 if(!e.getPlayer().hasPermission("AllBarkNoBytes.wand")) {
-                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(TAG + "You don't have permision for that!"));
+                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("You don't have permission for that!"));
                     return;
                 }
                 if(e.isCancelled()) {
-                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(TAG + "You don't have permision for that!"));
+                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("You don't have permission for that!"));
                     return;
                 }
                 state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
                 state.update();
-                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(TAG + "Block succesfully changed!"));
+                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Block successfully changed!"));
             }
             else
                 e.setCancelled(true);
@@ -118,6 +118,11 @@ public class BarkMain extends JavaPlugin implements Listener{
         Bukkit.addRecipe(customRecipe);
     }
 
+    /*
+     * Attempts to generate an item name based on the TreeSpecies of a tree without using nms
+     * @param species the species to retrieve a display name of
+     * @return the display name of the species
+     */
     private static String speciesToName(TreeSpecies species){
         if(species == TreeSpecies.GENERIC)
             return "Oak";

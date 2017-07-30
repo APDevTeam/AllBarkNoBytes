@@ -4,8 +4,10 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -139,6 +142,46 @@ public class BarkMain extends JavaPlugin implements Listener{
         }
         if(e.getBlock().getType() == Material.SANDSTONE)
             e.getBlock().setTypeIdAndData(Material.DOUBLE_STEP.getId(), (byte)9, false);
+
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e){
+        if(e.getPlayer().getGameMode() == GameMode.CREATIVE)
+            return;
+        Block block = e.getBlock();
+        if(block.getState().getData() instanceof Tree){
+            Tree tree = (Tree)block.getState().getData();
+            if(tree.getDirection() != BlockFace.SELF)
+                return;
+            ItemStack item = new Tree(tree.getSpecies()).toItemStack(1);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ITEMTAG +"Smooth " + speciesToName(tree.getSpecies()) + " Log");
+            item.setItemMeta(meta);
+            block.setType(Material.AIR);
+            block.getWorld().dropItemNaturally(block.getLocation(),item);
+            return;
+        }
+        if(block.getDrops(e.getPlayer().getInventory().getItemInMainHand()).size()==0)
+            return;
+        if(block.getType()==Material.DOUBLE_STEP && block.getData()==8) {
+            ItemStack item = new ItemStack(Material.STONE, 1);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ITEMTAG + "Squared Stone");
+            item.setItemMeta(meta);
+            block.setType(Material.AIR);
+            block.getWorld().dropItemNaturally(block.getLocation(),item);
+            return;
+        }
+        if(block.getType()==Material.DOUBLE_STEP && block.getData()==9) {
+            ItemStack item = new ItemStack(Material.SANDSTONE,1);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ITEMTAG + "Smoother Sandstone");
+            item.setItemMeta(meta);
+            block.setType(Material.AIR);
+            block.getWorld().dropItemNaturally(block.getLocation(),item);
+
+        }
 
     }
 

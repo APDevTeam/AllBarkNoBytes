@@ -2,7 +2,6 @@ package io.github.cccm5.AllBarkNoBytes;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,7 +28,7 @@ import java.util.logging.Logger;
 public class BarkMain extends JavaPlugin implements Listener{
     private Logger logger;
     private final String TAG = ChatColor.RED +  "[" + ChatColor.DARK_RED + "AllBarkNoBytes" + ChatColor.RED + "] " + ChatColor.RESET,
-                         ITEMTAG = "" + ChatColor.BLACK+ ChatColor.AQUA+ChatColor.RED+ChatColor.RESET;
+            ITEMTAG = "" + ChatColor.BLACK+ ChatColor.AQUA+ChatColor.RED+ChatColor.RESET;
     private ItemStack wandItem;
 
     @Override
@@ -42,7 +41,28 @@ public class BarkMain extends JavaPlugin implements Listener{
             meta.setDisplayName(ITEMTAG + "Bark wand");
             wandItem.setItemMeta(meta);
         }
-
+        {
+            ItemStack item = new ItemStack(Material.STONE, 2);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ITEMTAG + "Squared Stone");
+            item.setItemMeta(meta);
+            logger.info("Setting recipe for " + item.getItemMeta().getDisplayName() + " of type " + item.getData());
+            ShapedRecipe customRecipe = new ShapedRecipe(item);
+            customRecipe.shape("II","II");
+            customRecipe.setIngredient('I',new ItemStack(Material.STEP, 1, (short) 0, (byte) 0).getData() );
+            Bukkit.addRecipe(customRecipe);
+        }
+        {
+            ItemStack item = new ItemStack(Material.SANDSTONE,2);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ITEMTAG + "Smoother Sandstone");
+            item.setItemMeta(meta);
+            logger.info("Setting recipe for " + item.getItemMeta().getDisplayName() + " of type " + item.getData());
+            ShapedRecipe customRecipe = new ShapedRecipe(item);
+            customRecipe.shape("II","II");
+            customRecipe.setIngredient('I',new ItemStack(Material.STEP, 1, (short) 0, (byte) 1).getData() );
+            Bukkit.addRecipe(customRecipe);
+        }
         for(TreeSpecies species : TreeSpecies.values()) {
             ItemStack item = new Tree(species).toItemStack(4);
             ItemMeta meta = item.getItemMeta();
@@ -70,9 +90,16 @@ public class BarkMain extends JavaPlugin implements Listener{
                 state.setData(new Tree(((Tree)state.getData()).getSpecies(), BlockFace.SELF));
                 state.update();
                 e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Block successfully changed!"));
+                return;
             }
-            else
-                e.setCancelled(true);
+            if(e.getAction()== Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.DOUBLE_STEP){
+                if(e.getClickedBlock().getData()>1)
+                    return;
+                e.getClickedBlock().setData((byte) (e.getClickedBlock().getData() + 8));
+                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Block successfully changed!"));
+                return;
+            }
+            e.setCancelled(true);
         }
     }
     @Override
@@ -90,7 +117,7 @@ public class BarkMain extends JavaPlugin implements Listener{
             }
         if(!emptySlot) {
             player.sendMessage(TAG + "You have no space for the wand!");
-        return true;
+            return true;
         }
         player.getInventory().addItem(wandItem);
         return true;
@@ -102,9 +129,17 @@ public class BarkMain extends JavaPlugin implements Listener{
             return;
         if(e.getBlock().getState().getData() instanceof Tree) {
             BlockState state = e.getBlock().getState();
-                state.setData(new Tree(((Tree) state.getData()).getSpecies(), BlockFace.SELF));
-                state.update();
+            state.setData(new Tree(((Tree) state.getData()).getSpecies(), BlockFace.SELF));
+            state.update();
+            return;
         }
+        if(e.getBlock().getType() == Material.STONE){
+            e.getBlock().setTypeIdAndData(Material.DOUBLE_STEP.getId(), (byte) 8, false);
+            return;
+        }
+        if(e.getBlock().getType() == Material.SANDSTONE)
+            e.getBlock().setTypeIdAndData(Material.DOUBLE_STEP.getId(), (byte)9, false);
+
     }
 
     private void registerRecipe(ItemStack item){
